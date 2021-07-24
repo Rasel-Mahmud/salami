@@ -1,0 +1,4 @@
+salami-back-end/node_modules
+salami-front-end/node_modules
+.DS_Store
+.env
