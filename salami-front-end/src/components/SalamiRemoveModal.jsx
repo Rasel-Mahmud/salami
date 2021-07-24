@@ -13,7 +13,7 @@ function SalamiRemoveModal({ open }) {
     
     // Remove salami from the database
     const removeSalamiById = async () => {
-      const response = await axios.post('http://localhost:3500/remove-salami-by-id', {
+      const response = await axios.post('https://eid-salami.herokuapp.com/remove-salami-by-id', {
         id: open.id
       });
       if(response.data.success){

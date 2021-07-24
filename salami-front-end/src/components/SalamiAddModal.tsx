@@ -31,13 +31,16 @@ function SalamiAddModal({ open, salamiHandleAddClose }: IProps) {
     e.preventDefault();
     // Post data in MongoDB
     const earnCollection = async () => {
-      const postFormData = await fetch("http://localhost:3500/earn", {
-        method: "POST",
-        body: JSON.stringify(formData),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      });
+      const postFormData = await fetch(
+        "https://eid-salami.herokuapp.com/earn",
+        {
+          method: "POST",
+          body: JSON.stringify(formData),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        }
+      );
       const jsonData = await postFormData.json();
       if (jsonData.success) {
         setAddOpen(false);
