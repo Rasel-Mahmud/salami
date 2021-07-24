@@ -40,7 +40,9 @@ function Earn() {
 
   useEffect(() => {
     const salamiData = async () => {
-      const response = await axios.get("http://localhost:3500/all-salami");
+      const response = await axios.get(
+        "https://eid-salami.herokuapp.com/all-salami"
+      );
       const salmiData = response.data;
       setUsers(salmiData);
     };
