@@ -43,3 +43,18 @@ code {
 .modal-wrapper .MuiButtonBase-root {
   margin-bottom: 20px;
 }
+
+/* Main Title */
+.main-title {
+  text-align: center;
+  position: relative;
+}
+.main-title::after {
+  position: absolute;
+  content: "";
+  background: #ccc;
+  width: 150px;
+  height: 3px;
+  bottom: -5px;
+  right: 43%;
+}

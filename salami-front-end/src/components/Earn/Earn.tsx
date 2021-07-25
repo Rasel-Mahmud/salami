@@ -6,16 +6,16 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableRow from "@material-ui/core/TableRow";
 import Button from "@material-ui/core/Button";
-import Modal from "@material-ui/core/Modal";
-import SalamiAddModal from "./SalamiAddModal";
-import SalamiRemoveModal from "./SalamiRemoveModal";
+import SalamiAddModal from "./../Modal/SalamiAddModal";
+import SalamiRemoveModal from "./../Modal/SalamiRemoveModal";
 import axios from "axios";
-import SalamiList from "./SalamiList";
-import SalamiSampleList from "./SalamiSampleList";
+import SalamiList from "./../Table/SalamiList";
+import SalamiSampleList from "./../Table/SalamiSampleList";
+import { EarnTitle } from "./../Title";
 
-import { userContext } from "./UserContext";
-import { salamiAddModalContext } from "./UserContext";
-import { salamiRemoveModalContext } from "./UserContext";
+import { userContext } from "./../UserContext";
+import { salamiAddModalContext } from "./../UserContext";
+import { salamiRemoveModalContext } from "./../UserContext";
 
 // interface
 interface ISate {
@@ -85,6 +85,7 @@ function Earn() {
   return (
     <Grid container>
       <Grid item xs={12}>
+        <EarnTitle />
         <TableContainer>
           <Table>
             <TableBody>
@@ -109,13 +110,14 @@ function Earn() {
                 users.length
                   ? users.map((person, index) => (
                       <SalamiList
+                        key={index}
                         user={person}
                         index={index}
                         salamiHandleRemoveOpen={salamiHandleRemoveOpen}
                       />
                     ))
                   : sampleUsers.map((person) => (
-                      <SalamiSampleList user={person} />
+                      <SalamiSampleList user={person} key={person.id} />
                     ))
               }
 

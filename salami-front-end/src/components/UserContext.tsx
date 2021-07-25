@@ -1,9 +1,18 @@
 import { useState, createContext, ReactNode } from "react";
+import { sampleEarnData } from "./SampleData/SampleData";
+import { sampleSpendData } from "./SampleData/SampleData";
 
 // interface
 interface ISampleUsers {
   id: number;
   name: string;
+  amount: number;
+  status: string;
+}
+
+interface ISpendContext {
+  id: number;
+  purpose: string;
   amount: number;
   status: string;
 }
@@ -22,30 +31,34 @@ const removeSalamiContext = {
   setRemoveOpen: (removeOpen: { status: boolean; id?: number }) => {},
 };
 
-const sampleData: ISampleUsers[] = [
-  { id: 1, name: "বড় মামা", amount: 100, status: "earn" },
-  { id: 2, name: "চাচা", amount: 200, status: "earn" },
-  { id: 3, name: "খালা মানি", amount: 300, status: "earn" },
-];
-
-export const userContext = createContext<ISampleUsers[]>(sampleData);
+export const userContext = createContext<ISampleUsers[]>(sampleEarnData);
 export const salamiAddModalContext = createContext(addSalamiContext);
 export const salamiRemoveModalContext = createContext(removeSalamiContext);
 
+export const salamiSpendContext =
+  createContext<ISpendContext[]>(sampleSpendData);
+
 export function UserProvider({ children }: ReactNodeType) {
-  const [sampleUsers, setSampleUsers] = useState<ISampleUsers[]>(sampleData);
+  const [sampleUsers, setSampleUsers] =
+    useState<ISampleUsers[]>(sampleEarnData);
+
+  const [salamiSpendSampleData, SetSalamiSpendSampleData] =
+    useState<ISpendContext[]>(sampleSpendData);
+
   const [addOpen, setAddOpen] = useState(addSalamiContext.addOpen);
   const [removeOpen, setRemoveOpen] = useState(removeSalamiContext.removeOpen);
 
   return (
     <userContext.Provider value={sampleUsers}>
-      <salamiAddModalContext.Provider value={{ addOpen, setAddOpen }}>
-        <salamiRemoveModalContext.Provider
-          value={{ removeOpen, setRemoveOpen }}
-        >
-          {children}
-        </salamiRemoveModalContext.Provider>
-      </salamiAddModalContext.Provider>
+      <salamiSpendContext.Provider value={salamiSpendSampleData}>
+        <salamiAddModalContext.Provider value={{ addOpen, setAddOpen }}>
+          <salamiRemoveModalContext.Provider
+            value={{ removeOpen, setRemoveOpen }}
+          >
+            {children}
+          </salamiRemoveModalContext.Provider>
+        </salamiAddModalContext.Provider>
+      </salamiSpendContext.Provider>
     </userContext.Provider>
   );
 }

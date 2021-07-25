@@ -2,12 +2,12 @@ import React, { useState, useEffect, useContext } from "react";
 import Modal from "@material-ui/core/Modal";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { salamiAddModalContext } from "./UserContext";
+import { salamiAddModalContext } from "./../UserContext";
 
 interface ISate {
   formData: {
     name: string;
-    amount: Number;
+    amount: number;
   }[];
 }
 

@@ -1,17 +1,19 @@
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import Earn from "./components/Earn";
-import Title from "./components/Title";
+import Earn from "./components/Earn/Earn";
+import Spend from "./components/Spend/Spend";
+import { MainTitle } from "./components/Title";
 import { UserProvider } from "./components/UserContext";
 
 function App() {
   return (
     <div className="container-width">
       <UserProvider>
-        <Title />
+        <MainTitle />
         <Router>
           <Switch>
             <Route exact path="/">
               <Earn />
+              <Spend />
             </Route>
           </Switch>
         </Router>
