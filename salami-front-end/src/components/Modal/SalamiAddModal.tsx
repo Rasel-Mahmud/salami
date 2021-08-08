@@ -18,7 +18,7 @@ interface IProps {
 
 function SalamiAddModal({ open, salamiHandleAddClose }: IProps) {
   const [formData, setFormData] = useState<ISate["formData"]>([]);
-  const { setAddOpen } = useContext(salamiAddModalContext);
+  const { addOpen, setAddOpen } = useContext(salamiAddModalContext);
 
   const onClickHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -31,19 +31,31 @@ function SalamiAddModal({ open, salamiHandleAddClose }: IProps) {
     e.preventDefault();
     // Post data in MongoDB
     const earnCollection = async () => {
-      const postFormData = await fetch(
-        "https://eid-salami.herokuapp.com/earn",
-        {
+      if (addOpen.whatIDid === "earn") {
+        const postFormData = await fetch("http://localhost:3500/earn/", {
           method: "POST",
           body: JSON.stringify(formData),
           headers: {
             "Content-type": "application/json; charset=UTF-8",
           },
+        });
+        const jsonData = await postFormData.json();
+        if (jsonData?.data?._id) {
+          setAddOpen({ status: false, whatIDid: "" });
         }
-      );
-      const jsonData = await postFormData.json();
-      if (jsonData.success) {
-        setAddOpen(false);
+      }
+      if (addOpen.whatIDid === "spend") {
+        const postFormData = await fetch("http://localhost:3500/spend/", {
+          method: "POST",
+          body: JSON.stringify(formData),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        });
+        const jsonData = await postFormData.json();
+        if (jsonData?.data?._id) {
+          setAddOpen({ status: false, whatIDid: "" });
+        }
       }
     };
     earnCollection();
@@ -63,13 +75,21 @@ function SalamiAddModal({ open, salamiHandleAddClose }: IProps) {
         className="modal-wrapper"
         style={{ width: "500px" }}
       >
-        <h3>সালামি নিবন্ধন</h3>
+        <h3>
+          {addOpen.whatIDid === "earn"
+            ? "সালামি জমা করুন"
+            : "খরচ নথিভুক্ত করুন"}
+        </h3>
         <TextField
           name="name"
           id="outlined-basic"
           onChange={onClickHandler}
           fullWidth
-          label="যার থেকে সালামি পেয়েছি"
+          label={
+            addOpen.whatIDid === "earn"
+              ? "যার থেকে সালামি পেয়েছি"
+              : "যে খাত এ খরচ হয়েছে"
+          }
           variant="outlined"
         />
         <TextField
@@ -78,11 +98,13 @@ function SalamiAddModal({ open, salamiHandleAddClose }: IProps) {
           id="outlined-basic"
           onChange={onClickHandler}
           fullWidth
-          label="যত টাকা পেয়েছি"
+          label={
+            addOpen.whatIDid === "earn" ? "যত টাকা পেয়েছি" : "যত টাকা খরচ হয়েছে"
+          }
           variant="outlined"
         />
         <Button type="submit" variant="contained" color="secondary">
-          জমা করি
+          {addOpen.whatIDid === "earn" ? "জমা করি" : "খরচের হিসাব যুক্ত করি"}
         </Button>
       </form>
     </Modal>

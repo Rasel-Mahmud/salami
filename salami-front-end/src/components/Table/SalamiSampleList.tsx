@@ -8,7 +8,7 @@ import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 
 // Interface
 interface IProps {
-  user: {
+  list: {
     id: number;
     name?: string;
     purpose?: string;
@@ -17,12 +17,12 @@ interface IProps {
   };
 }
 
-function SalamiSampleList({ user }: IProps) {
+function SalamiSampleList({ list }: IProps) {
   return (
-    <TableRow key={user.id}>
-      <TableCell>{user.id}</TableCell>
-      <TableCell>{user.name ? user.name : user.purpose}</TableCell>
-      <TableCell align="center">৳ {user.amount}</TableCell>
+    <TableRow key={list.id}>
+      <TableCell>{list.id}</TableCell>
+      <TableCell>{list.name ? list.name : list.purpose}</TableCell>
+      <TableCell align="center">৳ {list.amount}</TableCell>
       <TableCell align="center" style={{ width: "100px" }}>
         <Link to="/">
           <EditIcon style={{ color: "green" }} />

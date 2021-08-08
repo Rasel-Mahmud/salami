@@ -11,15 +11,15 @@ import SalamiRemoveModal from "./../Modal/SalamiRemoveModal";
 import axios from "axios";
 import SalamiList from "./../Table/SalamiList";
 import SalamiSampleList from "./../Table/SalamiSampleList";
-import { EarnTitle } from "./../Title";
 
 import { userContext } from "./../UserContext";
 import { salamiAddModalContext } from "./../UserContext";
 import { salamiRemoveModalContext } from "./../UserContext";
+import { salamiBalance } from "./../UserContext";
 
 // interface
 interface ISate {
-  users: {
+  list: {
     _id: number;
     name: string;
     amount: number;
@@ -36,35 +36,45 @@ function Earn() {
   const sampleUsers = useContext<ISate["sampleUser"]>(userContext);
   const { addOpen, setAddOpen } = useContext(salamiAddModalContext);
   const { removeOpen, setRemoveOpen } = useContext(salamiRemoveModalContext);
-  const [users, setUsers] = useState<ISate["users"]>([]);
+  const [earnList, setEarnList] = useState<ISate["list"]>([]);
+  const { balance, setBalance } = useContext(salamiBalance);
 
   useEffect(() => {
     const salamiData = async () => {
-      const response = await axios.get(
-        "https://eid-salami.herokuapp.com/all-salami"
-      );
-      const salmiData = response.data;
-      setUsers(salmiData);
+      const response = await axios.get("http://localhost:3500/earn/all");
+      const salmiData = response.data.data;
+      setEarnList(salmiData);
     };
     salamiData().catch((err) => console.log(err.message));
   }, []);
 
   // Total Amount
-  const totalAmount = () => {
-    return users.reduce(
-      (acc, current) => Number(acc) + Number(current.amount),
-      0
-    );
-  };
+  useEffect(() => {
+    const totalAmount = () => {
+      const totalBalance = earnList.reduce(
+        (acc, current) => Number(acc) + Number(current.amount),
+        0
+      );
+      return totalBalance;
+    };
+    totalAmount();
+    setBalance({ ...balance, earn: totalAmount() });
+  }, [earnList]);
 
   // Salami Handle Modal Add
-  const salamiHandleAddOpen = () => {
-    setAddOpen(true);
+  const salamiHandleAddOpen = (whatIDid: string) => {
+    setAddOpen({
+      status: true,
+      whatIDid: whatIDid,
+    });
   };
 
   // Salami Handle Modal Add
   const salamiHandleAddClose = () => {
-    setAddOpen(false);
+    setAddOpen({
+      status: false,
+      whatIDid: "",
+    });
   };
 
   // Salami Handle Modal Remove
@@ -75,17 +85,9 @@ function Earn() {
     });
   };
 
-  // Salami Handle Modal Remove
-  const salamiHandleRemoveClose = () => {
-    setRemoveOpen({
-      status: false,
-    });
-  };
-
   return (
     <Grid container>
       <Grid item xs={12}>
-        <EarnTitle />
         <TableContainer>
           <Table>
             <TableBody>
@@ -107,17 +109,17 @@ function Earn() {
               </TableRow>
               {
                 /* Table body from loop */
-                users.length
-                  ? users.map((person, index) => (
+                earnList.length
+                  ? earnList.map((list, index) => (
                       <SalamiList
                         key={index}
-                        user={person}
+                        list={list}
                         index={index}
                         salamiHandleRemoveOpen={salamiHandleRemoveOpen}
                       />
                     ))
-                  : sampleUsers.map((person) => (
-                      <SalamiSampleList user={person} key={person.id} />
+                  : sampleUsers.map((list) => (
+                      <SalamiSampleList list={list} key={list.id} />
                     ))
               }
 
@@ -127,17 +129,17 @@ function Earn() {
                   <b>ঈদ এ মোট সালামি উঠেছে</b>
                 </TableCell>
                 <TableCell align="center">
-                  <b>৳ {totalAmount() || "600"}</b>
+                  <b>৳ {balance.earn || "600"}</b>
                 </TableCell>
                 <TableCell colSpan={2}>
                   <Button
                     type="button"
-                    onClick={salamiHandleAddOpen}
+                    onClick={() => salamiHandleAddOpen("earn")}
                     variant="contained"
                     color="secondary"
                     style={{ margin: "10px 0px 0px 50px" }}
                   >
-                    ঈদ সালামি যোগ করুন
+                    সালামি যোগ করুন
                   </Button>
                 </TableCell>
               </TableRow>
@@ -147,10 +149,10 @@ function Earn() {
       </Grid>
 
       <SalamiAddModal
-        open={addOpen}
+        open={addOpen.status}
         salamiHandleAddClose={salamiHandleAddClose}
       />
-      <SalamiRemoveModal open={removeOpen} />
+      <SalamiRemoveModal open={removeOpen} whatIDid="earn" />
     </Grid>
   );
 }

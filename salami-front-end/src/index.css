@@ -48,6 +48,7 @@ code {
 .main-title {
   text-align: center;
   position: relative;
+  margin-bottom: 50px;
 }
 .main-title::after {
   position: absolute;

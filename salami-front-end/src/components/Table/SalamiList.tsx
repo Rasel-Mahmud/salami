@@ -8,7 +8,7 @@ import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 
 // types
 interface IProps {
-  user: {
+  list: {
     _id: number;
     name: string;
     amount: number;
@@ -17,21 +17,21 @@ interface IProps {
   salamiHandleRemoveOpen: (id: number) => void;
 }
 
-function SalamiList({ user, index, salamiHandleRemoveOpen }: IProps) {
+function SalamiList({ list, index, salamiHandleRemoveOpen }: IProps) {
   return (
-    <TableRow key={user._id}>
+    <TableRow key={list._id}>
       <TableCell>
         <b>{index + 1}</b>
       </TableCell>
-      <TableCell>{user.name}</TableCell>
-      <TableCell align="center">৳ {user.amount}</TableCell>
+      <TableCell>{list.name}</TableCell>
+      <TableCell align="center">৳ {list.amount}</TableCell>
       <TableCell align="center" style={{ width: "100px" }}>
         <Link to="/">
           <EditIcon style={{ color: "green" }} />
         </Link>
       </TableCell>
       <TableCell align="center" style={{ width: "100px" }}>
-        <Link to="/" onClick={(e) => salamiHandleRemoveOpen(user._id)}>
+        <Link to="/" onClick={(e) => salamiHandleRemoveOpen(list._id)}>
           <DeleteForeverIcon style={{ color: "red" }} />
         </Link>
       </TableCell>

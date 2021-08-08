@@ -22,8 +22,8 @@ type ReactNodeType = {
 };
 
 const addSalamiContext = {
-  addOpen: false,
-  setAddOpen: (addOpen: boolean) => {},
+  addOpen: { status: false, whatIDid: "" },
+  setAddOpen: (addOpen: { status: boolean; whatIDid: string }) => {},
 };
 
 const removeSalamiContext = {
@@ -31,9 +31,15 @@ const removeSalamiContext = {
   setRemoveOpen: (removeOpen: { status: boolean; id?: number }) => {},
 };
 
+const salamiBalanceContext = {
+  balance: { earn: 0, spend: 0, balance: 0 },
+  setBalance: (balance: { earn: number; spend: number; balance: number }) => {},
+};
+
 export const userContext = createContext<ISampleUsers[]>(sampleEarnData);
 export const salamiAddModalContext = createContext(addSalamiContext);
 export const salamiRemoveModalContext = createContext(removeSalamiContext);
+export const salamiBalance = createContext(salamiBalanceContext);
 
 export const salamiSpendContext =
   createContext<ISpendContext[]>(sampleSpendData);
@@ -47,6 +53,7 @@ export function UserProvider({ children }: ReactNodeType) {
 
   const [addOpen, setAddOpen] = useState(addSalamiContext.addOpen);
   const [removeOpen, setRemoveOpen] = useState(removeSalamiContext.removeOpen);
+  const [balance, setBalance] = useState(salamiBalanceContext.balance);
 
   return (
     <userContext.Provider value={sampleUsers}>
@@ -55,7 +62,9 @@ export function UserProvider({ children }: ReactNodeType) {
           <salamiRemoveModalContext.Provider
             value={{ removeOpen, setRemoveOpen }}
           >
-            {children}
+            <salamiBalance.Provider value={{ balance, setBalance }}>
+              {children}
+            </salamiBalance.Provider>
           </salamiRemoveModalContext.Provider>
         </salamiAddModalContext.Provider>
       </salamiSpendContext.Provider>

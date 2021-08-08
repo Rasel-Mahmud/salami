@@ -9,9 +9,10 @@ interface IProps {
     status: boolean;
     id?: String;
   };
+  whatIDid: string;
 }
 
-function SalamiRemoveModal({ open }: IProps) {
+function SalamiRemoveModal({ open, whatIDid }: IProps) {
   const { removeOpen, setRemoveOpen } = useContext(salamiRemoveModalContext);
 
   // Salami Remove Handler
@@ -20,16 +21,26 @@ function SalamiRemoveModal({ open }: IProps) {
 
     // Remove salami from the database
     const removeSalamiById = async () => {
-      const response = await axios.post(
-        "https://eid-salami.herokuapp.com/remove-salami-by-id",
-        {
+      if (whatIDid === "earn") {
+        const response = await axios.post("http://localhost:3500/earn/id", {
           id: open.id,
-        }
-      );
-      if (response.data.success) {
-        setRemoveOpen({
-          status: false,
         });
+        if (response.data.data.deletedCount > 0) {
+          setRemoveOpen({
+            status: false,
+          });
+        }
+      }
+
+      if (whatIDid === "spend") {
+        const response = await axios.post("http://localhost:3500/spend/id", {
+          id: open.id,
+        });
+        if (response.data.data.deletedCount > 0) {
+          setRemoveOpen({
+            status: false,
+          });
+        }
       }
     };
     removeSalamiById();
