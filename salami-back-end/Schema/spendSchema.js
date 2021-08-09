@@ -7,7 +7,11 @@ const spendSchema = mongoose.Schema({
   },
   amount: {
     type: Number,
-    require: true
+    required: true
+  },
+  user: {
+    type: mongoose.Types.ObjectId,
+    ref: "user"
   }
 });
 

@@ -2,17 +2,18 @@ const express = require('express');
 const mongoose = require('mongoose');
 const ObjectId = require('mongodb').ObjectId
 const earnRouter = express.Router();
+const checkLogin = require('./../middleware/checkLogin');
 
 const earnSchema = require('../Schema/earnSchema');
 const Earn = new mongoose.model('earn', earnSchema);
 
 // add salami in the database
-earnRouter.post('/', async (req, res) =>{
-  const earnData = new Earn(req.body);
+earnRouter.post('/', checkLogin, async (req, res) =>{
+  const earnData = new Earn({...req.body, user: req.id});
+  console.log(earnData)
 
   try {
-    await earnData.save();
-
+    const earnList = await earnData.save();
     res.status(200).json({
       data : earnData,
       message: "Earn was successfully added!"
@@ -27,9 +28,8 @@ earnRouter.post('/', async (req, res) =>{
 });
 
 // pull all salami data
-earnRouter.get('/all', async (req, res) => {
-  const allSalami = await Earn.find({});
-  
+earnRouter.get('/all', checkLogin, async (req, res) => {
+  const allSalami = await Earn.find({}).populate('user', "username email");
   try {
     res.status(200).json({
       data : allSalami,

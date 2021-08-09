@@ -2,8 +2,7 @@ import React, { useContext } from "react";
 import { salamiBalance } from "./../UserContext";
 
 function Balance() {
-  const { balance, setBalance } = useContext(salamiBalance);
-  console.log(balance);
+  const { balance } = useContext(salamiBalance);
   return (
     <div>
       <h4>ঈদ সালামি থেকে মোট আয় : {balance.earn} টাকা</h4>

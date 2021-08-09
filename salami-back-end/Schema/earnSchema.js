@@ -8,6 +8,10 @@ const earnSchema = mongoose.Schema({
   amount: {
     type: Number,
     require: true
+  },
+  user: {
+    type: mongoose.Types.ObjectId,
+    ref: "user"
   }
 });
 

@@ -2,13 +2,14 @@ const express = require('express');
 const ObjectId = require('mongodb').ObjectId
 const mongoose = require('mongoose');
 const spendRouter = express.Router();
+const checkLogin = require('./../middleware/checkLogin');
 
 const spendSchema = require('./../Schema/spendSchema');
 const Spend = mongoose.model('spend', spendSchema);
 
 // Add spends
-spendRouter.post('/', async (req, res)=> {
-  const spendData = new Spend(req.body);
+spendRouter.post('/', checkLogin, async (req, res)=> {
+  const spendData = new Spend({...req.body, user: req.id});
   try{
     await spendData.save();
     res.status(200).json({
@@ -25,8 +26,8 @@ spendRouter.post('/', async (req, res)=> {
 });
 
 // Get all spend
-spendRouter.get('/all', async (req, res)=> {
-  const allSpendData = await Spend.find();
+spendRouter.get('/all', checkLogin, async (req, res)=> {
+  const allSpendData = await Spend.find().populate('user', "username email");
   try{
     res.status(200).json({
       data : allSpendData,
