@@ -59,3 +59,33 @@ code {
   bottom: -5px;
   right: 43%;
 }
+
+/* Registration */
+.registration {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+form.registration-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.registration-form .registration-input {
+  margin-bottom: 20px;
+}
+
+/* Login */
+.login {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+form.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-form .login-input {
+  margin-bottom: 20px;
+}

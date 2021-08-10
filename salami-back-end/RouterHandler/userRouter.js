@@ -30,7 +30,7 @@ userRouter.post('/register', async (req, res) => {
   const getUser = await User.find({email: req.body.email});
   // Check if user already exist
   if(getUser.length > 0){
-    return res.status(500).json({
+    return res.status(200).json({
       message: "You have already registered"
     });
   }
@@ -50,7 +50,7 @@ userRouter.post('/register', async (req, res) => {
 
     res.status(200).json({
       data : newUser,
-      message: "user Added successfully"
+      message: "Registration successfully"
     })
   } catch(err) {
     res.status(500).json({

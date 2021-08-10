@@ -41,7 +41,11 @@ function Earn() {
 
   useEffect(() => {
     const salamiData = async () => {
-      const response = await axios.get("http://localhost:3500/earn/all");
+      const response = await axios.get("http://localhost:3500/earn/all", {
+        headers: {
+          Authorization: localStorage.getItem("salami-auth"),
+        },
+      });
       const salmiData = response.data.data;
       setEarnList(salmiData);
     };

@@ -40,7 +40,11 @@ function Spend() {
   // Get all spend List
   useEffect(() => {
     const getAllSpendList = async () => {
-      const response = await axios.get("http://localhost:3500/spend/all");
+      const response = await axios.get("http://localhost:3500/spend/all", {
+        headers: {
+          Authorization: localStorage.getItem("salami-auth"),
+        },
+      });
       setSpendList(response.data.data);
     };
     getAllSpendList();
